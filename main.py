@@ -1,9 +1,13 @@
 from board import Board
 
+
 def main():
     board = Board()
     board.show()
-    print(board.BLACK_turn_select(4,6))
+    for y in range(board.size):
+        for x in range(board.size):
+            if board.can_place_black(x, y):
+                print(f"座標: ({x},{y})")
 
 
 if __name__ == "__main__":

@@ -1,15 +1,15 @@
 class Board:
-    SIZE = 8
-    EMPTY = "."
-    BLACK = "B"
-    WHITE = "W"
-    DIRECTIONS = [
+    size = 8
+    empty = "."
+    black = "B"
+    white = "W"
+    direction = [
         (0, 1),   # 下
         (1, 0),   # 右
         (0, -1),  # 上
         (-1, 0),  # 左
         (1, 1),   # 右下
-        (-1, -1), # 左上
+        (-1, -1),  # 左上
         (1, -1),  # 右上
         (-1, 1)   # 左下
     ]
@@ -20,49 +20,69 @@ class Board:
         self.setup()
 
     def prepare(self):
-        for _ in range(self.SIZE):
+        for _ in range(self.size):
             row = []
-            for _ in range(self.SIZE):
-                row.append(self.EMPTY)
+            for _ in range(self.size):
+                row.append(self.empty)
             self.field.append(row)
 
     def setup(self):
-        self.field[3][3] = self.WHITE
-        self.field[3][4] = self.BLACK
-        self.field[4][3] = self.BLACK
-        self.field[4][4] = self.WHITE
-        self.field[5][4] = self.WHITE
-        
+        self.field[3][3] = self.white
+        self.field[3][4] = self.black
+        self.field[4][3] = self.black
+        self.field[4][4] = self.white
+        self.field[5][4] = self.white
 
-    def BLACK_turn_select(self,x,y):
-        if self.field[y][x] != self.EMPTY:
+    def can_place_black(self, x, y):
+        if self.field[y][x] != self.empty:
             return False
-        
-        
-        for dx,dy in self. DIRECTIONS:
+        for dx, dy in self. direction:
             next_x = x + dx
             next_y = y + dy
             opposite = False
-            
-            while 0 <= next_x < self.SIZE and 0 <= next_y < self.SIZE:
-                if self.field[next_y][next_x] == self.EMPTY:
+
+            while 0 <= next_x < self.size and 0 <= next_y < self.size:
+                if self.field[next_y][next_x] == self.empty:
                     break
-                elif self.field[next_y][next_x] == self.WHITE:
+                elif self.field[next_y][next_x] == self.white:
                     opposite = True
-                elif self.field[next_y][next_x] == self.BLACK:
+                elif self.field[next_y][next_x] == self.black:
                     if opposite:
                         return True
-                    break    
+                    break
 
                 next_x += dx
                 next_y += dy
 
         return False
 
-    
+    def can_place_white(self, x, y):
+        if self.field[y][x] != self.empty:
+            return False
+
+        for dx, dy in self. direction:
+            next_x = x + dx
+            next_y = y + dy
+            opposite = False
+
+            while 0 <= next_x < self.size and 0 <= next_y < self.size:
+                if self.field[next_y][next_x] == self.empty:
+                    break
+                elif self.field[next_y][next_x] == self.black:
+                    opposite = True
+                elif self.field[next_y][next_x] == self.white:
+                    if opposite:
+                        return True
+                    break
+
+                next_x += dx
+                next_y += dy
+
+        return False
+
     def show(self):
-        for y in range(self.SIZE):
-            for x in range(self.SIZE):
+        for y in range(self.size):
+            for x in range(self.size):
                 print(self.field[y][x], end=" ")
             print()
 
@@ -70,4 +90,4 @@ class Board:
 if __name__ == "__main__":
     board = Board()
     board.show()
-    board.select()
+    board.can_place_black()
