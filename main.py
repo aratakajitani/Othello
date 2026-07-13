@@ -3,7 +3,7 @@ from board import Board
 def main():
     board = Board()
     board.show()
-    print(board.select(1,3))
+    print(board.BLACK_turn_select(4,6))
 
 
 if __name__ == "__main__":
