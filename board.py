@@ -21,14 +21,21 @@ class Board:
         self.field[3][4] = self.BLACK
         self.field[4][3] = self.BLACK
         self.field[4][4] = self.WHITE
+        self.field[3][2] = self.WHITE
 
     def select(self,x,y):
         if self.field[y][x] != self.EMPTY:
             return False
-        if self.field[y][x+1] == self.WHITE:
-            if self.field[y][x+2] == self.BLACK:
+        next_x = x+1
+
+        while next_x < self.SIZE:
+            if self.field[y][next_x] == self.BLACK:
+                return False
+            if self.field[y][next_x] == self.WHITE:
                 return True
-        
+            next_x += 1
+        return False
+
     def show(self):
         for y in range(self.SIZE):
             for x in range(self.SIZE):
