@@ -93,7 +93,7 @@ class Board:
 
         self.place_black(x, y)
 
-        all_reversible_stones = []
+        can_reverse_stone = []
 
         for dx, dy in self. direction:
             next_x = x + dx
@@ -107,7 +107,6 @@ class Board:
                     opposite = True
                 elif self.field[next_y][next_x] == self.black:
                     if opposite:
-                        can_reverse_stone = []
                         while (next_y, next_x) != (y, x):
                             next_x = next_x - dx
                             next_y = next_y - dy
@@ -115,13 +114,12 @@ class Board:
                                 break
                             can_reverse_stone.append((next_y, next_x))
                             print(can_reverse_stone)
-                            all_reversible_stones.extend(can_reverse_stone)
                     break
 
                 next_x += dx
                 next_y += dy
 
-        return all_reversible_stones
+        return can_reverse_stone
 
     def can_reverse_white(self, x, y):
 
@@ -130,7 +128,7 @@ class Board:
 
         self.place_white(x, y)
 
-        all_reversible_stones = []
+        can_reverse_stone = []
 
         for dx, dy in self. direction:
             next_x = x + dx
@@ -144,7 +142,6 @@ class Board:
                     opposite = True
                 elif self.field[next_y][next_x] == self.white:
                     if opposite:
-                        can_reverse_stone = []
                         while (next_y, next_x) != (y, x):
                             next_x = next_x - dx
                             next_y = next_y - dy
@@ -152,13 +149,12 @@ class Board:
                                 break
                             can_reverse_stone.append((next_y, next_x))
                             print(can_reverse_stone)
-                            all_reversible_stones.extend(can_reverse_stone)
                     break
 
                 next_x += dx
                 next_y += dy
 
-        return all_reversible_stones
+        return can_reverse_stone
 
     def reverese_black(self, x, y):
         can_reverse_stone = self.can_reverse_black(x, y)
