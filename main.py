@@ -4,7 +4,8 @@ from board import Board
 def main():
     board = Board()
     board.show()
-    board.reverese_black(4, 6)
+    board.get_opponent_stone(board.black)
+    board.reverese_stone(4, 6, board.black)
     board.show()
 
 

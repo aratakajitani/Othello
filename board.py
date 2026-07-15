@@ -15,7 +15,7 @@ class Board:
     ]
 
     def __init__(self):
-        self.field = []
+        self.board = []
         self.prepare()
         self.setup()
 
@@ -24,17 +24,22 @@ class Board:
             row = []
             for _ in range(self.size):
                 row.append(self.empty)
-            self.field.append(row)
+            self.board.append(row)
 
     def setup(self):
-        self.field[3][3] = self.white
-        self.field[3][4] = self.black
-        self.field[4][3] = self.black
-        self.field[4][4] = self.white
-        self.field[5][4] = self.white
+        self.board[3][3] = self.white
+        self.board[3][4] = self.black
+        self.board[4][3] = self.black
+        self.board[4][4] = self.white
+        self.board[5][4] = self.white
 
-    def can_place_black(self, x, y):
-        if self.field[y][x] != self.empty:
+    def get_opponent_stone(self, color):
+        if color == self.black:
+            return self.white
+        return self.black
+
+    def can_place_stone(self, x, y, color):
+        if self.board[y][x] != self.empty:
             return False
         for dx, dy in self. direction:
             next_x = x + dx
@@ -42,11 +47,11 @@ class Board:
             opposite = False
 
             while 0 <= next_x < self.size and 0 <= next_y < self.size:
-                if self.field[next_y][next_x] == self.empty:
+                if self.board[next_y][next_x] == self.empty:
                     break
-                elif self.field[next_y][next_x] == self.white:
+                elif self.board[next_y][next_x] == self.get_opponent_stone(color):
                     opposite = True
-                elif self.field[next_y][next_x] == self.black:
+                elif self.board[next_y][next_x] == color:
                     if opposite:
                         return True
                     break
@@ -56,42 +61,12 @@ class Board:
 
         return False
 
-    def can_place_white(self, x, y):
-        if self.field[y][x] != self.empty:
-            return False
+    def can_reverse_stone(self, x, y, color):
 
-        for dx, dy in self. direction:
-            next_x = x + dx
-            next_y = y + dy
-            opposite = False
-
-            while 0 <= next_x < self.size and 0 <= next_y < self.size:
-                if self.field[next_y][next_x] == self.empty:
-                    break
-                elif self.field[next_y][next_x] == self.black:
-                    opposite = True
-                elif self.field[next_y][next_x] == self.white:
-                    if opposite:
-                        return True
-                    break
-
-                next_x += dx
-                next_y += dy
-
-        return False
-
-    def place_black(self, x, y):
-        self.field[y][x] = self.black
-
-    def place_white(self, x, y):
-        self.field[y][x] = self.white
-
-    def can_reverse_black(self, x, y):
-
-        if self.field[y][x] != self.empty:
+        if self.board[y][x] != self.empty:
             return []
 
-        self.place_black(x, y)
+        self.place_stone(x, y, color)
 
         can_reverse_stone = []
 
@@ -101,18 +76,18 @@ class Board:
             opposite = False
 
             while 0 <= next_x < self.size and 0 <= next_y < self.size:
-                if self.field[next_y][next_x] == self.empty:
+                if self.board[next_y][next_x] == self.empty:
                     break
-                elif self.field[next_y][next_x] == self.white:
+                elif self.board[next_y][next_x] == self.get_opponent_stone(color):
                     opposite = True
-                elif self.field[next_y][next_x] == self.black:
+                elif self.board[next_y][next_x] == color:
                     if opposite:
                         while (next_y, next_x) != (y, x):
                             next_x = next_x - dx
                             next_y = next_y - dy
                             if (next_y, next_x) == (y, x):
                                 break
-                            can_reverse_stone.append((next_y, next_x))
+                            can_reverse_stone.append((next_y, next_x, color))
                             print(can_reverse_stone)
                     break
 
@@ -121,55 +96,18 @@ class Board:
 
         return can_reverse_stone
 
-    def can_reverse_white(self, x, y):
+    def place_stone(self, x, y, color):
+        self.board[y][x] = color
 
-        if self.field[y][x] != self.empty:
-            return []
-
-        self.place_white(x, y)
-
-        can_reverse_stone = []
-
-        for dx, dy in self. direction:
-            next_x = x + dx
-            next_y = y + dy
-            opposite = False
-
-            while 0 <= next_x < self.size and 0 <= next_y < self.size:
-                if self.field[next_y][next_x] == self.empty:
-                    break
-                elif self.field[next_y][next_x] == self.black:
-                    opposite = True
-                elif self.field[next_y][next_x] == self.white:
-                    if opposite:
-                        while (next_y, next_x) != (y, x):
-                            next_x = next_x - dx
-                            next_y = next_y - dy
-                            if (next_y, next_x) == (y, x):
-                                break
-                            can_reverse_stone.append((next_y, next_x))
-                            print(can_reverse_stone)
-                    break
-
-                next_x += dx
-                next_y += dy
-
-        return can_reverse_stone
-
-    def reverese_black(self, x, y):
-        can_reverse_stone = self.can_reverse_black(x, y)
-        for y, x in can_reverse_stone:
-            self.field[y][x] = self.black
-
-    def reverese_white(self, x, y):
-        can_reverse_stone = self.can_reverse_white(x, y)
-        for y, x in can_reverse_stone:
-            self.field[y][x] = self.white
+    def reverese_stone(self, x, y, color):
+        can_reverse_stone = self.can_reverse_stone(x, y, color)
+        for y, x, color in can_reverse_stone:
+            self.board[y][x] = color
 
     def show(self):
         for y in range(self.size):
             for x in range(self.size):
-                print(self.field[y][x], end=" ")
+                print(self.board[y][x], end=" ")
             print()
 
 
