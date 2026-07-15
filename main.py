@@ -3,33 +3,26 @@ from board import Board
 
 def main():
     board = Board()
+    color = board.black
     while board.empty_count > 0:
-        print("黒のターンです")
+        if color == board.black:
+                print("黒のターンです")
+        if color == board.white:
+                print("白のターンです")
+
         board.show()
         print(board.empty_count)
-        board.get_opponent_stone(board.black)
+        board.get_opponent_stone(color)
         for y in range(board.size):
             for x in range(board.size):
-                if board.can_place_stone(x, y, board.black):
+                if board.can_place_stone(x, y, color): 
                     print(f"座標: ({x},{y})")
         x = int(input("x座標を入力してください:"))
         y = int(input("y座標を入力してください:"))
-        if not board.can_place_stone(x, y, board.black):
+        if not board.can_place_stone(x, y, color):
             continue
-        board.reverse_stone(x, y, board.black)
-        print("白のターンです")
-        board.show()
-        print(board.empty_count)
-        board.get_opponent_stone(board.white)
-        for y in range(board.size):
-            for x in range(board.size):
-                if board.can_place_stone(x, y, board.white):
-                    print(f"座標: ({x},{y})")
-        x = int(input("x座標を入力してください:"))
-        y = int(input("y座標を入力してください:"))
-        if not board.can_place_stone(x, y, board.white):
-            continue
-        board.reverse_stone(x, y, board.white)
+        board.reverse_stone(x, y, color)
+        color = board.get_opponent_stone(color)
     return False
 
 
