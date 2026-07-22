@@ -19,6 +19,7 @@ class Board:
         self.prepare()
         self.setup()
         self.count_empty()
+        self.pass_check()
 
     def prepare(self):
         for _ in range(self.size):
@@ -34,7 +35,7 @@ class Board:
         self.board[4][4] = self.white
 
     def count_empty(self):
-        self.empty_count = 61
+        self.empty_count = 60
 
     def get_opponent_stone(self, color):
         if color == self.black:
@@ -127,6 +128,73 @@ class Board:
             print("引き分けです")
         else:
             print("白の勝ちです")
+        return False
+
+    def pass_check(self):
+        self.pass_count = 0
+
+    def turn_change(self, color):
+        color = self.get_opponent_stone(color)
+
+    def select_color(self):
+        while True:
+            try:
+                c = int(input("最初の色を白なら1 黒なら2を入力してください:"))
+                if c != 1 and c != 2:
+                    print("入力エラーです")
+                    continue
+                if c == 1:
+                    self.black
+                return self.white
+            except ValueError:
+                print("入力エラーです")
+                continue
+
+    def currunt_color(self, color):
+        if color == self.black:
+            print("黒のターンです")
+        if color == self.white:
+            print("白のターンです")
+
+    def game(self, color):
+        self.pass_check()
+        while self.pass_count < 2 and self.empty_count > 0:
+            self.show()
+            self.currunt_color(color)
+            can_place_flag = False
+            for y in range(self.size):
+                for x in range(self.size):
+                    if self.can_place_stone(x, y, color):
+                        print(f"座標: ({x},{y})")
+                        can_place_flag = True
+            if can_place_flag:
+                while True:
+                    try:
+                        x = int(input("x座標を入力してください:"))
+                        if not 0 <= x <= 8:
+                            print("入力エラーです")
+                            continue
+                        y = int(input("y座標を入力してください:"))
+                        if not 0 <= y <= 8:
+                            print("入力エラーです")
+                            continue
+                    except ValueError:
+                        print("入力エラーです")
+                        continue
+                    self.pass_count = 0
+                    if self.can_place_stone(x, y, color):
+                        self.reverse_stone(x, y, color)
+                        self.empty_count -= 1
+                        print(self.empty_count)
+                        break
+                    else:
+                        print("そこには置けません")
+            else:
+                print("石を置けないのでパスします")
+                self.pass_count += 1
+            color = self.get_opponent_stone(color)
+
+        self.count_stone(x, y)
         return False
 
 
