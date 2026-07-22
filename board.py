@@ -34,7 +34,7 @@ class Board:
         self.board[4][4] = self.white
 
     def count_empty(self):
-        self.empty_count = 60
+        self.empty_count = 61
 
     def get_opponent_stone(self, color):
         if color == self.black:
@@ -42,7 +42,6 @@ class Board:
         return self.black
 
     def can_place_stone(self, x, y, color):
-
         if self.board[y][x] != self.empty:
             return False
         for dx, dy in self. direction:
@@ -58,7 +57,7 @@ class Board:
                 elif self.board[next_y][next_x] == color:
                     if opposite:
                         return True
-                   
+                    break
                 next_x += dx
                 next_y += dy
 
@@ -98,7 +97,6 @@ class Board:
                 next_x += dx
                 next_y += dy
 
-        self.empty_count -= 1
         return can_reverse_stone
 
     def reverse_stone(self, x, y, color):
@@ -114,9 +112,25 @@ class Board:
                 print(self.board[y][x], end=" ")
             print()
 
+    def count_stone(self, x, y):
+        black_count = 0
+        white_count = 0
+        for y in range(self.size):
+            for x in range(self.size):
+                if self.board[y][x] == self.black:
+                    black_count += 1
+                if self.board[y][x] == self.white:
+                    white_count += 1
+        if black_count > white_count:
+            print("黒の勝ちです")
+        elif black_count == white_count:
+            print("引き分けです")
+        else:
+            print("白の勝ちです")
+        return False
+
 
 if __name__ == "__main__":
     board = Board()
     board.show()
     board.can_place_black()
-    board.place_black[2][3]
