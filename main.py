@@ -1,10 +1,9 @@
-from board import Board
+from game import game
 
 
 def main():
-    board = Board()
-    color = board.select_color()
-    board.game(color)
+    othello = game()
+    othello.turn()
 
 
 if __name__ == "__main__":
