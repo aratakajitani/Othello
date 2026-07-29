@@ -1,7 +1,7 @@
-from stone import stone
+from stone import Stone
 
 
-class board:
+class Board:
     size = 8
     direction = [
         (0, 1),   # 下
@@ -15,7 +15,7 @@ class board:
     ]
 
     def __init__(self):
-        board.board = []
+        self.board = []
         self.prepare()
         self.setup()
 
@@ -23,29 +23,29 @@ class board:
         for _ in range(self.size):
             row = []
             for _ in range(self.size):
-                row.append(stone.empty)
+                row.append(Stone.EMPTY)
             self.board.append(row)
 
     def setup(self):
-        self.board[3][3] = stone.white
-        self.board[3][4] = stone.black
-        self.board[4][3] = stone.black
-        self.board[4][4] = stone.white
+        self.board[3][3] = Stone.WHITE
+        self.board[3][4] = Stone.BLACK
+        self.board[4][3] = Stone.BLACK
+        self.board[4][4] = Stone.WHITE
 
-    def can_place_stone(x, y, color):
-        if board.board[y][x] != stone.empty:
+    def can_place_stone(self, x, y, stone):
+        if self.board[y][x] != Stone.EMPTY:
             return False
-        for dx, dy in board.direction:
+        for dx, dy in self.direction:
             next_x = x + dx
             next_y = y + dy
             opposite = False
 
-            while 0 <= next_x < board.size and 0 <= next_y < board.size:
-                if board.board[next_y][next_x] == stone.empty:
+            while 0 <= next_x < self.size and 0 <= next_y < self.size:
+                if self.board[next_y][next_x] == Stone.EMPTY:
                     break
-                elif board.board[next_y][next_x] == stone.get_opponent_stone(color):
+                elif self.board[next_y][next_x] == Stone.get_opponent_stone(stone):
                     opposite = True
-                elif board.board[next_y][next_x] == color:
+                elif self.board[next_y][next_x] != Stone.get_opponent_stone(stone):
                     if opposite:
                         return True
                     break
@@ -54,35 +54,35 @@ class board:
 
         return False
 
-    def can_reverse_stone(x, y, color):
+    def can_reverse_stone(self, x, y, stone):
 
-        if not board.can_place_stone(x, y, color):
+        if not self.can_place_stone(x, y, stone):
             print("そこには置けません")
             return False
 
         can_reverse_stone = []
 
-        if board.board[y][x] != stone.empty:
+        if self.board[y][x] != Stone.EMPTY:
             return False
 
-        for dx, dy in board.direction:
+        for dx, dy in self.direction:
             next_x = x + dx
             next_y = y + dy
             opposite = False
 
-            while 0 <= next_x < board.size and 0 <= next_y < board.size:
-                if board.board[next_y][next_x] == stone.empty:
+            while 0 <= next_x < self.size and 0 <= next_y < self.size:
+                if self.board[next_y][next_x] == Stone.EMPTY:
                     break
-                elif board.board[next_y][next_x] == stone.get_opponent_stone(color):
+                elif self.board[next_y][next_x] == Stone.get_opponent_stone(stone):
                     opposite = True
-                elif board.board[next_y][next_x] == color:
+                elif self.board[next_y][next_x] == stone:
                     if opposite:
                         while (next_y, next_x) != (y, x):
                             next_x = next_x - dx
                             next_y = next_y - dy
                             if (next_y, next_x) == (y, x):
                                 break
-                            can_reverse_stone.append((next_y, next_x, color))
+                            can_reverse_stone.append((next_y, next_x, stone))
                     break
 
                 next_x += dx
@@ -90,19 +90,35 @@ class board:
 
         return can_reverse_stone
 
-    def reverse_stone(x, y, color):
-        can_reverse_stone = board.can_reverse_stone(x, y, color)
+    def reverse_stone(self, x, y, stone):
+        can_reverse_stone = self.can_reverse_stone(x, y, stone)
         if can_reverse_stone:
-            board.board[y][x] = color
+            self.board[y][x] = stone
             for y, x, color in can_reverse_stone:
-                board.board[y][x] = color
+                self.board[y][x] = stone
 
-    def show():
-        for y in range(board.size):
-            for x in range(board.size):
-                print(board.board[y][x], end=" ")
+    def show(self):
+        for y in range(self.size):
+            for x in range(self.size):
+                print(self.board[y][x], end=" ")
             print()
+
+    def count_stone(self):
+        black_count = 0
+        white_count = 0
+        for y in range(self.size):
+            for x in range(self.size):
+                if self.board[y][x] == Stone.BLACK:
+                    black_count += 1
+                if self.board[y][x] == Stone.WHITE:
+                    white_count += 1
+        if black_count > white_count:
+            print("黒の勝ちです")
+        elif black_count == white_count:
+            print("引き分けです")
+        else:
+            print("白の勝ちです")
 
 
 if __name__ == "__main__":
-    board.show()
+    Board.show()
