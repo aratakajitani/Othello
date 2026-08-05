@@ -66,12 +66,12 @@ class Game:
             else:
                 color_str = "白"
             print(f"【{color_str}のターンです】")
-            coords = current_player.select_play(self.board)
-            if coords is None:
+            current_x_y = current_player.select_play(self.board)
+            if current_x_y is None:
                 self.pass_count += 1
                 print("置ける場所がないためパスしました。")
             else:
-                x, y = coords
+                x, y = current_x_y
                 self.board.reverse_stone(x, y, current_player.stone)
                 self.pass_count = 0
                 self.board.show()
