@@ -57,7 +57,6 @@ class Board:
     def can_reverse_stone(self, x, y, stone):
 
         if not self.can_place_stone(x, y, stone):
-            print("そこには置けません")
             return False
 
         can_reverse_stone = []
@@ -94,7 +93,7 @@ class Board:
         can_reverse_stone = self.can_reverse_stone(x, y, stone)
         if can_reverse_stone:
             self.board[y][x] = stone
-            for y, x, color in can_reverse_stone:
+            for y, x, stone in can_reverse_stone:
                 self.board[y][x] = stone
 
     def show(self):

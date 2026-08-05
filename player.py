@@ -1,5 +1,4 @@
 from board import Board
-from game import Game
 
 
 class Player:
@@ -34,5 +33,5 @@ class Player:
                     print("そこには置けません")
         else:
             print("石を置けないのでパスします")
-            return Game.plus_pass_count()
-        return False
+            return None
+        return x, y
