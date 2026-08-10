@@ -15,38 +15,10 @@ class Game:
         cls.pass_count = 0
 
     @classmethod
-    def select_stone(cls):
-        while True:
-            try:
-                c = int(input("最初の色を白なら1 黒なら2を入力してください:"))
-                if c != 1 and c != 2:
-                    print("入力エラーです")
-                    continue
-                if c == 2:
-                    return Stone.BLACK
-                else:
-                    return Stone.WHITE
-            except ValueError:
-                print("入力エラーです")
-                continue
-
-    @classmethod
     def create_players(cls, mode, player_1_stone, player_2_stone):
         player_1 = Player(player_1_stone)
         player_2 = Cpu(player_2_stone) if mode == 1 else Player(player_2_stone)
         return player_1, player_2
-
-    def player_1_color(self):
-        if self.player_1.stone == Stone.BLACK:
-            print("黒のターンです")
-        if self.player_1.stone == Stone.WHITE:
-            print("白のターンです")
-
-    def player_2_color(self):
-        if self.player_2.stone == Stone.BLACK:
-            print("黒のターンです")
-        if self.player_2.stone == Stone.WHITE:
-            print("白のターンです")
 
     def turn_change(self, stone):
         stone = Stone.get_opponent_stone(stone)
@@ -79,21 +51,6 @@ class Game:
         print("--- ゲーム終了 ---")
         self.board.count_stone()
         return False
-
-    def select_game_mode():
-        while True:
-            try:
-                c = int(input("1人モードなら1 2人モードならなら2を入力してください:"))
-                if c != 1 and c != 2:
-                    print("入力エラーです")
-                    continue
-                if c == 2:
-                    return 2
-                else:
-                    return 1
-            except ValueError:
-                print("入力エラーです")
-                continue
 
 
 if __name__ == "__main__":

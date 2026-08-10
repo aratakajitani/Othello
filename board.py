@@ -96,12 +96,6 @@ class Board:
             for y, x, stone in can_reverse_stone:
                 self.board[y][x] = stone
 
-    def show(self):
-        for y in range(self.size):
-            for x in range(self.size):
-                print(self.board[y][x], end=" ")
-            print()
-
     def count_stone(self):
         black_count = 0
         white_count = 0
@@ -111,12 +105,6 @@ class Board:
                     black_count += 1
                 if self.board[y][x] == Stone.WHITE:
                     white_count += 1
-        if black_count > white_count:
-            print("黒の勝ちです")
-        elif black_count == white_count:
-            print("引き分けです")
-        else:
-            print("白の勝ちです")
 
 
 if __name__ == "__main__":
