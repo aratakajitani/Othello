@@ -23,9 +23,7 @@ class Game:
     def turn_change(self, stone):
         stone = Stone.get_opponent_stone(stone)
 
-    def run(self):
-        print("--- ゲーム開始 ---")
-        self.board.show()
+    def run(self, ui):
         if self.player_1.stone == Stone.BLACK:
             current_player = self.player_1
             next_player = self.player_2
@@ -33,12 +31,9 @@ class Game:
             current_player = self.player_2
             next_player = self.player_1
         while self.pass_count < 2:
-            if current_player.stone == Stone.BLACK:
-                color_str = "黒"
-            else:
-                color_str = "白"
-            print(f"【{color_str}のターンです】")
-            current_x_y = current_player.select_play(self.board)
+            ui.show()
+            ui.can_place_show(self, current_player)
+            current_x_y = ui.select_place_stone()
             if current_x_y is None:
                 self.pass_count += 1
                 print("置ける場所がないためパスしました。")
@@ -46,11 +41,18 @@ class Game:
                 x, y = current_x_y
                 self.board.reverse_stone(x, y, current_player.stone)
                 self.pass_count = 0
-                self.board.show()
             current_player, next_player = next_player, current_player
         print("--- ゲーム終了 ---")
         self.board.count_stone()
         return False
+
+    def select_play_show(self, player):
+        placable_places = []
+        for y in range(self.board.size):
+            for x in range(self.board.size):
+                if self.board.can_place_stone(x, y, player.stone):
+                    placable_places.append((x, y))
+        return placable_places
 
 
 if __name__ == "__main__":

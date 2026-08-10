@@ -13,6 +13,13 @@ class Othello_ui:
         self.wait_var = tk.IntVar()
         self.chosen_value = None
 
+        self.entry_place_x = tk.Entry(self.master, width=20)
+        self.entry_place_y = tk.Entry(self.master, width=20)
+        self.label_x = tk.Label(self.master, text='')
+        self.label_x.pack(pady=5)
+        self.label_y = tk.Label(self.master, text='')
+        self.label_y.pack(pady=5)
+
     def select_game_mode(self):
         one_btn = tk.Button(self.master, text='一人モード', command=lambda: self.button_clicked(1))
         one_btn.pack()
@@ -50,3 +57,32 @@ class Othello_ui:
                     board_string += "・"
             board_string += "\n"
         self.board_label.config(text=board_string)
+
+    def can_place_show(self, game, current_player):
+        places = game.select_play_show(current_player)
+        for x, y in places:
+            places = tk.Label(self.master, text=f"座標: ({x},{y})")
+            places.pack()
+
+    def select_place_stone(self):
+        self.entry_place_x.pack()
+        self.entry_place_y.pack()
+        completion_btn = tk.Button(self.master, text="完了", command=self.get_entry)
+        completion_btn.pack()
+        self.master.wait_variable(self.wait_var)
+        self.entry_place_x.pack_forget()
+        self.entry_place_y.pack_forget()
+        completion_btn.pack_forget()
+        return self.chosen_value
+
+    def get_entry(self):
+        self.get_entry_x()
+        self.get_entry_y()
+
+    def get_entry_x(self):
+        get_text_x = self.entry_place_x.get()
+        self.label_x.config(text=f"入力された文字: {get_text_x}")
+
+    def get_entry_y(self):
+        get_text_y = self.entry_place_y.get()
+        self.label_y.config(text=f"入力された文字: {get_text_y}")

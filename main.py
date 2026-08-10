@@ -17,7 +17,7 @@ def main():
     player_1, player_2 = Game.create_players(mode, player_1_stone, player_2_stone)
     othello = Game(board=board, player_1=player_1, player_2=player_2)
     ui.show()
-    root.after(100, othello.run)
+    root.after(100, othello.run, ui)
     root.mainloop()
 
 

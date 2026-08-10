@@ -105,6 +105,8 @@ class Board:
                     black_count += 1
                 if self.board[y][x] == Stone.WHITE:
                     white_count += 1
+    
+    
 
 
 if __name__ == "__main__":
