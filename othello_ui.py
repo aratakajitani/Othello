@@ -20,6 +20,8 @@ class Othello_ui:
         self.label_y = tk.Label(self.master, text='')
         self.label_y.pack(pady=5)
 
+        self.places_labels = []
+
     def select_game_mode(self):
         one_btn = tk.Button(self.master, text='一人モード', command=lambda: self.button_clicked(1))
         one_btn.pack()
@@ -61,8 +63,9 @@ class Othello_ui:
     def can_place_show(self, game, current_player):
         places = game.select_play_show(current_player)
         for x, y in places:
-            places = tk.Label(self.master, text=f"座標: ({x},{y})")
-            places.pack()
+            labels = tk.Label(self.master, text=f"座標: ({x},{y})")
+            labels.pack()
+            self.places_labels.append(labels)
 
     def select_place_stone(self):
         self.entry_place_x.pack()
@@ -76,13 +79,9 @@ class Othello_ui:
         return self.chosen_value
 
     def get_entry(self):
-        self.get_entry_x()
-        self.get_entry_y()
-
-    def get_entry_x(self):
-        get_text_x = self.entry_place_x.get()
-        self.label_x.config(text=f"入力された文字: {get_text_x}")
-
-    def get_entry_y(self):
-        get_text_y = self.entry_place_y.get()
-        self.label_y.config(text=f"入力された文字: {get_text_y}")
+        for labels in self.places_labels:
+            labels.pack_forget()
+        get_x = self.entry_place_x.get()
+        get_y = self.entry_place_y.get()
+        self.chosen_value = get_x, get_y
+        self.wait_var.set(1)
