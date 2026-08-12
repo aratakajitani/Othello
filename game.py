@@ -23,68 +23,63 @@ class Game:
             player_2 = Player(player_2_stone)
         return player_1, player_2
 
-    def run_tkinter(self, ui):
+    def run_game(self, ui=None):
+
+        is_ui = ui is not None
+
+        if not is_ui:
+            print("--- ゲーム開始 ---")
+            self.board.show()
+
         if self.player_1.stone == Stone.BLACK:
             current_player = self.player_1
             next_player = self.player_2
         else:
             current_player = self.player_2
             next_player = self.player_1
+
         while self.pass_count < 2:
             if current_player.stone == Stone.BLACK:
                 color_str = "黒"
             else:
                 color_str = "白"
-            ui.turn_color_show(color_str)
-            ui.show()
-            ui.master.update()
+            if is_ui:
+                ui.turn_color_show(color_str)
+                ui.show()
+                ui.master.update()
+            else:
+                print(f"【{color_str}のターンです】")
             if isinstance(current_player, Cpu):
                 current_x_y = current_player.select_play(self.board)
-                ui.cpu_select(current_x_y)
+                if is_ui:
+                    ui.cpu_select(current_x_y)
             else:
-                current_x_y = ui.can_place_show(self, current_player)
+                if is_ui:
+                    current_x_y = ui.can_place_show(self, current_player)
+                else:
+                    current_x_y = current_player.select_play(self.board)
             if current_x_y is None:
                 self.pass_count += 1
-                ui.pass_count()
+                if is_ui:
+                    ui.pass_count()
+                else:
+                    print("置ける場所がないためパスしました。")
             else:
                 x, y = current_x_y
-                x = int(x)
-                y = int(y)
+                x, y = int(x), int(y)
                 self.board.reverse_stone(x, y, current_player.stone)
                 self.pass_count = 0
-                ui.pass_delete()
+                if is_ui:
+                    ui.pass_delete()
+                else:
+                    self.board.show()
             current_player, next_player = next_player, current_player
         winner = self.board.count_stone()
-        ui.finish_running(winner)
-        return False
-
-    def run_terminal(self):
-        print("--- ゲーム開始 ---")
-        self.board.show()
-        if self.player_1.stone == Stone.BLACK:
-            current_player = self.player_1
-            next_player = self.player_2
+        if is_ui:
+            ui.finish_running(winner)
         else:
-            current_player = self.player_2
-            next_player = self.player_1
-        while self.pass_count < 2:
-            if current_player.stone == Stone.BLACK:
-                color_str = "黒"
-            else:
-                color_str = "白"
-            print(f"【{color_str}のターンです】")
-            current_x_y = current_player.select_play(self.board)
-            if current_x_y is None:
-                self.pass_count += 1
-                print("置ける場所がないためパスしました。")
-            else:
-                x, y = current_x_y
-                self.board.reverse_stone(x, y, current_player.stone)
-                self.pass_count = 0
-                self.board.show()
-            current_player, next_player = next_player, current_player
-        print("--- ゲーム終了 ---")
-        print(self.board.count_stone())
+            print("--- ゲーム終了 ---")
+            print(winner)
         return False
 
     def select_play_show(self, player):
