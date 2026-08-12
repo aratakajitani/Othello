@@ -4,11 +4,20 @@ from game import Game
 from stone import Stone
 from othello_ui import Othello_ui
 from standard_io import StandardIO
+import sys
 
 
 def main():
     board = Board()
-    if StandardIO.select_running() == 1:
+    run_mode = None
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "ui":
+            run_mode = 1
+        elif sys.argv[1] == "terminal":
+            run_mode = 2
+    if run_mode is None:
+        run_mode = StandardIO.select_running()
+    if run_mode == 1:
         root = tk.Tk()
         root.title("オセロ")
         root.geometry("1000x1000")
