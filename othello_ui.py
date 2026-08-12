@@ -74,11 +74,11 @@ class Othello_ui:
             board_string += "\n"
         self.board_label.config(text=board_string)
 
-    def can_place_show(self, game, current_player):
+    def select_play(self, game, current_player):
         places = game.select_play_show(current_player)
         if places:
             for x, y in places:
-                places_btn = tk.Button(self.master, text=f"座標: ({x},{y})", command=lambda: self.places_button_clicked(x, y))
+                places_btn = tk.Button(self.master, text=f"座標: ({x},{y})", command=lambda bx=x, by=y: self.places_button_clicked(bx, by))
                 places_btn.pack()
                 self.places_btn.append(places_btn)
             self.master.wait_variable(self.wait_var)
@@ -109,3 +109,9 @@ class Othello_ui:
     def pass_delete(self):
         if self.pass_labels:
             self.pass_labels[-1].pack_forget()
+
+    def game_start_show(self):
+        pass
+
+    def update_window(self):
+        self.master.update()

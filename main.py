@@ -30,6 +30,7 @@ def main():
         ui = None
         player_1_stone = StandardIO.select_stone()
         mode = StandardIO.select_game_mode()
+        terminal_ui = StandardIO(board) 
     player_2_stone = Stone.get_opponent_stone(player_1_stone)
     player_1, player_2 = Game.create_players(mode, player_1_stone, player_2_stone)
     othello = Game(board=board, player_1=player_1, player_2=player_2)
@@ -39,7 +40,7 @@ def main():
         ui.show()
         root.mainloop()
     else:
-        othello.run_game()
+        othello.run_game(terminal_ui)
 
 
 if __name__ == "__main__":

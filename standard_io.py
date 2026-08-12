@@ -3,6 +3,35 @@ from stone import Stone
 
 class StandardIO:
 
+    def __init__(self, board):
+        self.board = board
+
+    def game_start_show(self):
+        print("--- ゲーム開始 ---")
+        self.show()
+
+    def turn_color_show(self, color_str):
+        print(f"【{color_str}のターンです】")
+
+    def show(self):
+        self.board.show()
+
+    def update_window(self):
+        pass
+
+    def pass_count(self):
+        print("置ける場所がないためパスしました。")
+
+    def pass_delete(self):
+        pass
+
+    def finish_running(self, winner):
+        print("--- ゲーム終了 ---")
+        print(winner)
+
+    def can_place_show(self, game, ui):
+        pass
+
     @classmethod
     def select_stone(cls):
         while True:

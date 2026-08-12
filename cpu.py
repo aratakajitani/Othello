@@ -26,3 +26,6 @@ class Cpu:
         else:
             return None
         return x, y
+
+    def prepare_ui_turn(self, game, ui):
+        return ui.select_play(game, self)
