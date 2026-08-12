@@ -26,6 +26,3 @@ class Cpu:
         else:
             return None
         return x, y
-
-    def best_select_stone(self):
-        pass

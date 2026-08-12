@@ -106,19 +106,15 @@ class Board:
                 if self.board[y][x] == Stone.WHITE:
                     white_count += 1
         if black_count > white_count:
-            print("黒の勝ちです")
-        elif black_count == white_count:
-            print("引き分けです")
+            return f"白{white_count}枚 黒{black_count}枚 黒の勝ちです"
         else:
-            print("白の勝ちです")
-
+            return f"白{white_count}枚 黒{black_count}枚 白の勝ちです"
 
     def show(self):
         for y in range(self.size):
             for x in range(self.size):
                 print(self.board[y][x], end=" ")
             print()
-
 
 
 if __name__ == "__main__":

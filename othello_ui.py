@@ -13,14 +13,17 @@ class Othello_ui:
         self.wait_var = tk.IntVar()
         self.chosen_value = None
 
-        self.entry_place_x = tk.Entry(self.master, width=20)
-        self.entry_place_y = tk.Entry(self.master, width=20)
-        self.label_x = tk.Label(self.master, text='')
-        self.label_x.pack(pady=5)
-        self.label_y = tk.Label(self.master, text='')
-        self.label_y.pack(pady=5)
+        self.cpu_select_label = tk.Label(self.master, text="")
+        self.cpu_select_label.pack()
 
-        self.places_labels = []
+        self.current_color_label = tk.Label(self.master, text="")
+        self.current_color_label.pack()
+
+        self.pass_labels = []
+
+        self.places_btn = []
+
+        self.chosen_places = []
 
     def select_game_mode(self):
         one_btn = tk.Button(self.master, text='一人モード', command=lambda: self.button_clicked(1))
@@ -42,13 +45,24 @@ class Othello_ui:
         white_btn.pack_forget()
         return self.chosen_value
 
+    def turn_color_show(self, color_str):
+        self.current_color_label.config(text=f"【{color_str}のターンです】")
+
+    def cpu_select(self, current_x_y):
+        self.cpu_select_label.config(text=f"【cpuは{current_x_y}に置きました。】")
+
     def button_clicked(self, value):
         self.chosen_value = value
         self.wait_var.set(1)
 
     def show(self):
-        board_string = ""
+        numbers = ["０", "１", "２", "３", "４", "５", "６", "７", "８"]
+        board_string = "　"
+        for x in range(len(self.board.board)):
+            board_string += numbers[x]
+        board_string += "\n"
         for y in range(len(self.board.board)):
+            board_string += numbers[y]
             for x in range(len(self.board.board[y])):
                 stone = self.board.board[y][x]
                 if stone == Stone.BLACK:
@@ -62,26 +76,36 @@ class Othello_ui:
 
     def can_place_show(self, game, current_player):
         places = game.select_play_show(current_player)
-        for x, y in places:
-            labels = tk.Label(self.master, text=f"座標: ({x},{y})")
-            labels.pack()
-            self.places_labels.append(labels)
+        if places:
+            for x, y in places:
+                places_btn = tk.Button(self.master, text=f"座標: ({x},{y})", command=lambda: self.places_button_clicked(x, y))
+                places_btn.pack()
+                self.places_btn.append(places_btn)
+            self.master.wait_variable(self.wait_var)
+        else:
+            return None
+        return self.chosen_places
 
-    def select_place_stone(self):
-        self.entry_place_x.pack()
-        self.entry_place_y.pack()
-        completion_btn = tk.Button(self.master, text="完了", command=self.get_entry)
-        completion_btn.pack()
-        self.master.wait_variable(self.wait_var)
-        self.entry_place_x.pack_forget()
-        self.entry_place_y.pack_forget()
-        completion_btn.pack_forget()
-        return self.chosen_value
-
-    def get_entry(self):
-        for labels in self.places_labels:
-            labels.pack_forget()
-        get_x = self.entry_place_x.get()
-        get_y = self.entry_place_y.get()
-        self.chosen_value = get_x, get_y
+    def places_button_clicked(self, x, y):
+        self.chosen_places = x, y
+        for btn in self.places_btn:
+            btn.pack_forget()
         self.wait_var.set(1)
+
+    def finish_running(self, winner):
+        for pass_label in self.pass_labels:
+            pass_label.pack_forget()
+        self.pass_labels.clear()
+        self.cpu_select_label.pack_forget()
+        self.current_color_label.pack_forget()
+        self.winner_label = tk.Label(self.master, text=f"【{winner}】")
+        self.winner_label.pack()
+
+    def pass_count(self):
+        pass_label = tk.Label(self.master, text="おける場所がないのでパスしました。")
+        pass_label.pack()
+        self.pass_labels.append(pass_label)
+
+    def pass_delete(self):
+        if self.pass_labels:
+            self.pass_labels[-1].pack_forget()

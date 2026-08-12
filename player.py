@@ -6,12 +6,18 @@ class Player:
         self.stone = stone
 
     def select_play_show(self, board, stone):
+        can_place_flag = False
         placable_places = []
         for y in range(Board.size):
             for x in range(Board.size):
                 if board.can_place_stone(x, y, stone):
                     placable_places.append((x, y))
-        return placable_places
+                    can_place_flag = True
+        if can_place_flag:
+            while True:
+                return placable_places
+        else:
+            return None
 
     def select_play(self, board):
         can_place_flag = False
@@ -40,6 +46,5 @@ class Player:
                 else:
                     print("そこには置けません")
         else:
-            print("石を置けないのでパスします")
             return None
         return x, y

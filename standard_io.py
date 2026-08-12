@@ -2,40 +2,6 @@ from stone import Stone
 
 
 class StandardIO:
-    def __init__(self):
-        pass
-
-    def show_board(self, board):
-        print(board)
-
-    def can_select_place(self, x, y):
-        print(f"座標: ({x},{y})")
-
-    def input_place(self, board, board_size: int):
-        can_place_flag = True
-        if can_place_flag:
-            while True:
-                try:
-                    x = int(input("x座標を入力してください:"))
-                    if not 0 <= x <= board_size:
-                        print("入力エラーです")
-                        continue
-                    y = int(input("y座標を入力してください:"))
-                    if not 0 <= y <= board_size:
-                        print("入力エラーです")
-                        continue
-                except ValueError:
-                    print("入力エラーです")
-                    continue
-                if board.can_place_stone(x, y, self.stone):
-                    board.reverse_stone(x, y, self.stone)
-                    break
-                else:
-                    print("そこには置けません")
-        else:
-            print("石を置けないのでパスします")
-            return None
-        return x, y
 
     @classmethod
     def select_stone(cls):
@@ -53,18 +19,6 @@ class StandardIO:
                 print("入力エラーです")
                 continue
 
-    def start_running():
-        print("--- ゲーム開始 ---")
-
-    def turn_color_view(color_str):
-        print(f"【{color_str}のターンです】")
-
-    def finish_running():
-        print("--- ゲーム終了 ---")
-
-    def view_pass():
-        print("置ける場所がないためパスしました。")
-
     def select_game_mode():
         while True:
             try:
@@ -79,14 +33,6 @@ class StandardIO:
             except ValueError:
                 print("入力エラーです")
                 continue
-
-    def viwe_winner(self, black_count, white_count):
-        if black_count > white_count:
-            print("黒の勝ちです")
-        elif black_count == white_count:
-            print("引き分けです")
-        else:
-            print("白の勝ちです")
 
     def select_running():
         while True:
