@@ -56,9 +56,9 @@ class StandardIO:
                     print("入力エラーです")
                     continue
                 if c == 2:
-                    return 2
+                    return 4
                 else:
-                    return 1
+                    return 3
             except ValueError:
                 print("入力エラーです")
                 continue
@@ -70,10 +70,10 @@ class StandardIO:
                 if c != 1 and c != 2:
                     print("入力エラーです")
                     continue
-                if c == 2:
-                    return 2
-                else:
+                if c == 1:
                     return 1
+                else:
+                    return 2
             except ValueError:
                 print("入力エラーです")
                 continue

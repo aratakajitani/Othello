@@ -1,6 +1,7 @@
 from stone import Stone
 from cpu import Cpu
 from player import Player
+from othello_ui import Othello_ui
 
 
 class Game:
@@ -36,7 +37,12 @@ class Game:
             ui.turn_color_show(color_str)
             ui.show()
             ui.update_window()
-            current_x_y = current_player.select_play(self, ui)
+            if isinstance(current_player, Cpu):
+                current_x_y = current_player.select_play(self.board)
+            elif isinstance(ui, Othello_ui):
+                current_x_y = ui.select_play(self, current_player)
+            else:
+                current_x_y = current_player.select_play(self.board)
             if current_x_y is None:
                 self.pass_count += 1
                 ui.pass_count()
