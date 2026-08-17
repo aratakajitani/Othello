@@ -18,10 +18,10 @@ class Game:
     @classmethod
     def create_players(cls, mode, player_1_stone, player_2_stone):
         player_1 = Player(player_1_stone)
-        if mode == 1:
-            player_2 = Cpu(player_2_stone)
-        else:
+        if mode == 2:
             player_2 = Player(player_2_stone)
+        else:
+            player_2 = Cpu(player_2_stone)
         return player_1, player_2
 
     def run_game(self, ui):
@@ -39,6 +39,7 @@ class Game:
             ui.update_window()
             if isinstance(current_player, Cpu):
                 current_x_y = current_player.select_play(self.board)
+                ui.cpu_select(current_x_y)
             elif isinstance(ui, Othello_ui):
                 current_x_y = ui.select_play(self, current_player)
             else:

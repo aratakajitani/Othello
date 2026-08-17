@@ -25,11 +25,17 @@ def main():
         root.geometry("1000x1000")
         ui = Othello_ui(root, board)
         mode = ui.select_game_mode()
-        player_1_stone = ui.select_stone()
+        if mode == 1:
+            player_1_stone = ui.select_stone()
+        else:
+            player_1_stone = Stone.BLACK
     else:
         ui = None
-        player_1_stone = StandardIO.select_stone()
         mode = StandardIO.select_game_mode()
+        if mode == 1:
+            player_1_stone = StandardIO.select_stone()
+        else:
+            player_1_stone = Stone.BLACK
         terminal_ui = StandardIO(board)
     player_2_stone = Stone.get_opponent_stone(player_1_stone)
     player_1, player_2 = Game.create_players(mode, player_1_stone, player_2_stone)

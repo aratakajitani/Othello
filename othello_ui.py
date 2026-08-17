@@ -78,7 +78,7 @@ class Othello_ui:
         places = game.select_play_show(current_player)
         if places:
             for x, y in places:
-                places_btn = tk.Button(self.master, text=f"座標: ({x},{y})", command=lambda bx=x, by=y: self.places_button_clicked(bx, by))
+                places_btn = tk.Button(self.master, text=f"座標: ({y},{x})", command=lambda bx=x, by=y: self.places_button_clicked(bx, by))
                 places_btn.pack()
                 self.places_btn.append(places_btn)
             self.master.wait_variable(self.wait_var)
@@ -110,8 +110,8 @@ class Othello_ui:
         if self.pass_labels:
             self.pass_labels[-1].pack_forget()
 
-    def game_start_show(self):
-        pass
-
     def update_window(self):
         self.master.update()
+
+    def game_start_show(self):
+        pass
