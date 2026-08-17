@@ -2,7 +2,7 @@ import tkinter as tk
 from stone import Stone
 
 
-class Othelloui:
+class OthelloUI:
     def __init__(self, board):
         self.master = tk.Tk()
         self.master.title("オセロ")

@@ -1,7 +1,7 @@
 from stone import Stone
 from cpu import Cpu
 from player import Player
-from othello_ui import Othelloui
+from othello_ui import OthelloUI
 
 
 class Game:
@@ -38,7 +38,7 @@ class Game:
             if isinstance(current_player, Cpu):
                 current_x_y = current_player.select_play(self.board)
                 ui.cpu_select(current_x_y)
-            elif isinstance(ui, Othelloui):
+            elif isinstance(ui, OthelloUI):
                 current_x_y = ui.select_play(self, current_player)
             else:
                 current_x_y = current_player.select_play(self.board)

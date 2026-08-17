@@ -2,7 +2,7 @@ from board import Board
 from game import Game
 from stone import Stone
 from standard_io import StandardIO
-from othello_ui import Othelloui
+from othello_ui import OthelloUI
 import argparse
 
 
@@ -14,7 +14,7 @@ def main():
     if args.mode == 'terminal':
         ui = StandardIO(board)
     else:
-        ui = Othelloui(board)
+        ui = OthelloUI(board)
     mode = ui.select_game_mode()
     if mode == 1:
         player_1_stone = ui.select_stone()
