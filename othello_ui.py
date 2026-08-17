@@ -2,9 +2,11 @@ import tkinter as tk
 from stone import Stone
 
 
-class Othello_ui:
-    def __init__(self, master, board):
-        self.master = master
+class Othelloui:
+    def __init__(self, board):
+        self.master = tk.Tk()
+        self.master.title("オセロ")
+        self.master.geometry("1000x1000")
         self.board = board
 
         self.board_label = tk.Label(self.master, text="", font=("Courier", 24), justify="left")
@@ -73,6 +75,7 @@ class Othello_ui:
                     board_string += "・"
             board_string += "\n"
         self.board_label.config(text=board_string)
+        self.master.update()
 
     def select_play(self, game, current_player):
         places = game.select_play_show(current_player)
@@ -87,6 +90,8 @@ class Othello_ui:
         return self.chosen_places
 
     def places_button_clicked(self, x, y):
+        if self.pass_labels:
+            self.pass_labels[-1].pack_forget()
         self.chosen_places = x, y
         for btn in self.places_btn:
             btn.pack_forget()
@@ -105,13 +110,3 @@ class Othello_ui:
         pass_label = tk.Label(self.master, text="おける場所がないのでパスしました。")
         pass_label.pack()
         self.pass_labels.append(pass_label)
-
-    def pass_delete(self):
-        if self.pass_labels:
-            self.pass_labels[-1].pack_forget()
-
-    def update_window(self):
-        self.master.update()
-
-    def game_start_show(self):
-        pass

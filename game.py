@@ -1,7 +1,7 @@
 from stone import Stone
 from cpu import Cpu
 from player import Player
-from othello_ui import Othello_ui
+from othello_ui import Othelloui
 
 
 class Game:
@@ -25,7 +25,6 @@ class Game:
         return player_1, player_2
 
     def run_game(self, ui):
-        ui.game_start_show()
         if self.player_1.stone == Stone.BLACK:
             current_player = self.player_1
             next_player = self.player_2
@@ -36,11 +35,10 @@ class Game:
             color_str = "黒" if current_player.stone == Stone.BLACK else "白"
             ui.turn_color_show(color_str)
             ui.show()
-            ui.update_window()
             if isinstance(current_player, Cpu):
                 current_x_y = current_player.select_play(self.board)
                 ui.cpu_select(current_x_y)
-            elif isinstance(ui, Othello_ui):
+            elif isinstance(ui, Othelloui):
                 current_x_y = ui.select_play(self, current_player)
             else:
                 current_x_y = current_player.select_play(self.board)
@@ -51,7 +49,6 @@ class Game:
                 x, y = current_x_y
                 self.board.reverse_stone(int(x), int(y), current_player.stone)
                 self.pass_count = 0
-                ui.pass_delete()
             current_player, next_player = next_player, current_player
         winner = self.board.count_stone()
         ui.finish_running(winner)
@@ -64,7 +61,3 @@ class Game:
                 if self.board.can_place_stone(x, y, player.stone):
                     placable_places.append((x, y))
         return placable_places
-
-
-if __name__ == "__main__":
-    Game.turn()

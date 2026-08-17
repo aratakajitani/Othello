@@ -115,7 +115,3 @@ class Board:
             for x in range(self.size):
                 print(self.board[y][x], end=" ")
             print()
-
-
-if __name__ == "__main__":
-    Board.show()
