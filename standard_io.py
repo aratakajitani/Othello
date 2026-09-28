@@ -51,7 +51,7 @@ class StandardIO:
                     return 1
                 else:
                     print("--- ゲーム開始 ---")
-                    return 2 
+                    return 2
             except ValueError:
                 print("入力エラーです")
                 continue
