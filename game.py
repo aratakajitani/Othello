@@ -8,12 +8,8 @@ class Game:
 
     def __init__(self, board, player_1, player_2):
         self.board = board
-        self.pass_check()
         self.player_1 = player_1
         self.player_2 = player_2
-
-    def pass_check(self):
-        self.pass_count = 0
 
     @classmethod
     def create_players(cls, mode, player_1_stone, player_2_stone):
@@ -31,7 +27,7 @@ class Game:
         else:
             current_player = self.player_2
             next_player = self.player_1
-        while self.pass_count < 2:
+        while not self.board.finish_game():
             color_str = "黒" if current_player.stone == Stone.BLACK else "白"
             ui.turn_color_show(color_str)
             ui.show()
@@ -42,10 +38,7 @@ class Game:
                 current_x_y = ui.select_play(self, current_player)
             else:
                 current_x_y = current_player.select_play(self.board)
-            if current_x_y is None:
-                self.pass_count += 1
-                ui.pass_count()
-            else:
+            if self.board.has_valid_move(current_player.stone):
                 x, y = current_x_y
                 self.board.reverse_stone(int(x), int(y), current_player.stone)
                 self.pass_count = 0

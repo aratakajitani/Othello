@@ -33,6 +33,8 @@ class Board:
         self.board[4][4] = Stone.WHITE
 
     def can_place_stone(self, x, y, stone):
+        if not (0 <= x < self.size and 0 <= y < self.size):
+            return False
         if self.board[y][x] != Stone.EMPTY:
             return False
         for dx, dy in self.direction:
@@ -115,3 +117,28 @@ class Board:
             for x in range(self.size):
                 print(self.board[y][x], end=" ")
             print()
+
+    def has_valid_move(self, stone):
+        for y in range(self.size):
+            for x in range(self.size):
+                if self.can_place_stone(x, y, stone):
+                    return True
+        return False
+
+    def finish_game(self):
+        black_count = 0
+        white_count = 0
+        empty_count = 0
+        for y in range(self.size):
+            for x in range(self.size):
+                if self.board[y][x] == Stone.BLACK:
+                    black_count += 1
+                elif self.board[y][x] == Stone.WHITE:
+                    white_count += 1
+                elif self.board[y][x] == Stone.EMPTY:
+                    empty_count += 1
+        if empty_count == 0 or black_count == 0 or white_count == 0:
+            return True
+        if not self.has_valid_move(Stone.BLACK) and not self.has_valid_move(Stone.WHITE):
+            return True
+        return False
