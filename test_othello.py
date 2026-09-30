@@ -3,7 +3,7 @@ from stone import Stone
 
 
 def test_board_setup():
-    board = Board()
+    initial_board = Board()
     W = Stone.WHITE
     B = Stone.BLACK
     E = Stone.EMPTY
@@ -18,39 +18,39 @@ def test_board_setup():
         [E, E, E, E, E, E, E, E],
         [E, E, E, E, E, E, E, E],
     ]
-    assert board.board == expected_board
+    assert initial_board.board == expected_board
 
 
 def test_place_stone():
-    board = Board()
-    assert board.can_place_stone(3, 3, Stone.BLACK) is False
-    assert board.can_place_stone(8, 0, Stone.BLACK) is False
-    assert board.can_place_stone(-1, 4, Stone.BLACK) is False
-    assert board.can_place_stone(0, 0, Stone.BLACK) is False
-    assert board.can_place_stone(2, 3, Stone.BLACK) is True
+    initial_board = Board()
+    assert initial_board.can_place_stone(3, 3, Stone.BLACK) is False
+    assert initial_board.can_place_stone(8, 0, Stone.BLACK) is False
+    assert initial_board.can_place_stone(-1, 4, Stone.BLACK) is False
+    assert initial_board.can_place_stone(0, 0, Stone.BLACK) is False
+    assert initial_board.can_place_stone(2, 3, Stone.BLACK) is True
 
 
 def test_reverse_one_stone():
-    board = Board()
-    board.reverse_stone(3, 2, Stone.BLACK)
-    assert board.board[3][3] == Stone.BLACK
+    initial_board = Board()
+    initial_board.reverse_stone(3, 2, Stone.BLACK)
+    assert initial_board.board[3][3] == Stone.BLACK
 
 
 def test_reverse_two_stone():
-    board = Board()
-    board.board[3][2] = Stone.WHITE
-    board.reverse_stone(3, 1, Stone.WHITE)
-    assert board.board[3][2] == Stone.WHITE
-    assert board.board[3][3] == Stone.WHITE
+    test_board = Board()
+    test_board.board[3][2] = Stone.WHITE
+    test_board.reverse_stone(3, 1, Stone.WHITE)
+    assert test_board.board[3][2] == Stone.WHITE
+    assert test_board.board[3][3] == Stone.WHITE
 
 
-def test_reverse_two_directions_stone():
-    board = Board()
+def test_reverse_two_directions():
+    test_board = Board()
 
     W = Stone.WHITE
     B = Stone.BLACK
     E = Stone.EMPTY
-    board.board = [
+    test_board.board = [
         [E, E, E, E, E, E, E, E],
         [E, E, E, E, E, E, E, E],
         [E, E, E, B, W, E, E, E],
@@ -60,18 +60,18 @@ def test_reverse_two_directions_stone():
         [E, E, E, E, E, E, E, E],
         [E, E, E, E, E, E, E, E],
     ]
-    board.reverse_stone(2, 2, Stone.WHITE)
-    assert board.board[2][3] == Stone.WHITE
-    assert board.board[3][3] == Stone.WHITE
+    test_board.reverse_stone(2, 2, Stone.WHITE)
+    assert test_board.board[2][3] == Stone.WHITE
+    assert test_board.board[3][3] == Stone.WHITE
 
 
-def test_stop_revercing_stone():
-    board = Board()
+def test_reverse_stone_limit():
+    test_board = Board()
 
     W = Stone.WHITE
     B = Stone.BLACK
     E = Stone.EMPTY
-    board.board = [
+    test_board.board = [
         [E, E, E, E, E, E, E, E],
         [E, E, E, E, E, E, E, E],
         [E, E, E, E, E, E, E, E],
@@ -81,20 +81,24 @@ def test_stop_revercing_stone():
         [E, E, E, E, E, E, E, E],
         [E, E, E, E, E, E, E, E],
     ]
-    board.reverse_stone(2, 3, Stone.BLACK)
-    assert board.board[3][3] == Stone.BLACK
-    assert board.board[3][5] == Stone.WHITE
+    test_board.reverse_stone(2, 3, Stone.BLACK)
+    assert test_board.board[3][3] == Stone.BLACK
+    assert test_board.board[3][5] == Stone.WHITE
+
+
+def test_initial_pass():
+    initial_board = Board()
+    assert initial_board.has_places(Stone.BLACK) is True
+    assert initial_board.has_places(Stone.WHITE) is True
 
 
 def test_pass_check():
-    initial_board = Board()
-    assert initial_board.has_valid_move(Stone.BLACK) is True
-    assert initial_board.has_valid_move(Stone.WHITE) is True
-    pass_board = Board()
+
+    passed_board = Board()
     W = Stone.WHITE
     B = Stone.BLACK
     E = Stone.EMPTY
-    pass_board.board = [
+    passed_board.board = [
         [E, B, B, B, W, W, B, B],
         [B, B, W, W, W, B, W, B],
         [B, W, W, B, W, W, W, W],
@@ -104,17 +108,20 @@ def test_pass_check():
         [B, B, B, B, B, B, B, B],
         [W, B, W, W, B, B, W, W],
     ]
-    assert pass_board.has_valid_move(Stone.BLACK) is False
+    assert passed_board.has_places(Stone.BLACK) is False
 
 
-def test_finish_game():
+def test_initial_finish():
     initial_board = Board()
     assert initial_board.finish_game() is False
     assert initial_board.finish_game() is False
-    finish_board = Board()
+
+
+def test_finish_game():
+    finished_board = Board()
     W = Stone.WHITE
     B = Stone.BLACK
-    finish_board.board = [
+    finished_board.board = [
         [B, B, B, B, W, W, B, B],
         [B, B, W, W, W, B, W, B],
         [B, W, W, B, W, W, W, W],
@@ -124,4 +131,4 @@ def test_finish_game():
         [B, B, B, B, B, B, B, B],
         [W, B, W, W, B, B, W, W],
     ]
-    assert finish_board.finish_game() is True
+    assert finished_board.finish_game() is True

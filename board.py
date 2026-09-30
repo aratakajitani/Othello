@@ -118,7 +118,7 @@ class Board:
                 print(self.board[y][x], end=" ")
             print()
 
-    def has_valid_move(self, stone):
+    def has_places(self, stone):
         for y in range(self.size):
             for x in range(self.size):
                 if self.can_place_stone(x, y, stone):
@@ -139,6 +139,6 @@ class Board:
                     empty_count += 1
         if empty_count == 0 or black_count == 0 or white_count == 0:
             return True
-        if not self.has_valid_move(Stone.BLACK) and not self.has_valid_move(Stone.WHITE):
+        if not self.has_places(Stone.BLACK) and not self.has_places(Stone.WHITE):
             return True
         return False

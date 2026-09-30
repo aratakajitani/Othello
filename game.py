@@ -38,10 +38,9 @@ class Game:
                 current_x_y = ui.select_play(self, current_player)
             else:
                 current_x_y = current_player.select_play(self.board)
-            if self.board.has_valid_move(current_player.stone):
+            if self.board.has_places(current_player.stone):
                 x, y = current_x_y
                 self.board.reverse_stone(int(x), int(y), current_player.stone)
-                self.pass_count = 0
             current_player, next_player = next_player, current_player
         winner = self.board.count_stone()
         ui.finish_running(winner)
