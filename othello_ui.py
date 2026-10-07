@@ -77,10 +77,14 @@ class OthelloUI:
         self.board_label.config(text=board_string)
         self.master.update()
 
-    def select_play(self, game, current_player):
-        places = game.select_play_show(current_player)
-        if places:
-            for x, y in places:
+    def select_play(self, current_player):
+        placable_places = []
+        for y in range(self.board.size):
+            for x in range(self.board.size):
+                if self.board.can_place_stone(x, y, current_player.stone):
+                    placable_places.append((x, y))
+        if placable_places:
+            for x, y in placable_places:
                 places_btn = tk.Button(self.master, text=f"座標: ({y},{x})", command=lambda bx=x, by=y: self.places_button_clicked(bx, by))
                 places_btn.pack()
                 self.places_btn.append(places_btn)

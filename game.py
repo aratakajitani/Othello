@@ -35,7 +35,7 @@ class Game:
                 current_x_y = current_player.select_play(self.board)
                 ui.cpu_select(current_x_y)
             elif isinstance(ui, OthelloUI):
-                current_x_y = ui.select_play(self, current_player)
+                current_x_y = ui.select_play(current_player)
             else:
                 current_x_y = current_player.select_play(self.board)
             if self.board.has_places(current_player.stone):
@@ -45,11 +45,3 @@ class Game:
         winner = self.board.count_stone()
         ui.finish_running(winner)
         return False
-
-    def select_play_show(self, player):
-        placable_places = []
-        for y in range(self.board.size):
-            for x in range(self.board.size):
-                if self.board.can_place_stone(x, y, player.stone):
-                    placable_places.append((x, y))
-        return placable_places

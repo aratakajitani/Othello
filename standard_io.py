@@ -10,7 +10,7 @@ class StandardIO:
         print(f"【{color_str}のターンです】")
 
     def show(self):
-        self.board.show()
+        print(self.board.show())
 
     def pass_count(self):
         print("置ける場所がないためパスしました。")

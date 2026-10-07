@@ -98,25 +98,13 @@ class Board:
             for y, x, stone in can_reverse_stone:
                 self.board[y][x] = stone
 
-    def count_stone(self):
-        black_count = 0
-        white_count = 0
-        for y in range(self.size):
-            for x in range(self.size):
-                if self.board[y][x] == Stone.BLACK:
-                    black_count += 1
-                if self.board[y][x] == Stone.WHITE:
-                    white_count += 1
-        if black_count > white_count:
-            return f"白{white_count}枚 黒{black_count}枚 黒の勝ちです"
-        else:
-            return f"白{white_count}枚 黒{black_count}枚 白の勝ちです"
-
     def show(self):
+        showed_board = ""
         for y in range(self.size):
             for x in range(self.size):
-                print(self.board[y][x], end=" ")
-            print()
+                showed_board += str(self.board[y][x]) + " "
+            showed_board += "\n"
+        return showed_board
 
     def has_places(self, stone):
         for y in range(self.size):
@@ -142,3 +130,19 @@ class Board:
         if not self.has_places(Stone.BLACK) and not self.has_places(Stone.WHITE):
             return True
         return False
+
+    def count_stone(self):
+        black_count = 0
+        white_count = 0
+        for y in range(self.size):
+            for x in range(self.size):
+                if self.board[y][x] == Stone.BLACK:
+                    black_count += 1
+                if self.board[y][x] == Stone.WHITE:
+                    white_count += 1
+        if black_count > white_count:
+            return f"白{white_count}枚 黒{black_count}枚 黒の勝ちです"
+        elif white_count > black_count:
+            return f"白{white_count}枚 黒{black_count}枚 白の勝ちです"
+        else:
+            return "引き分けです"

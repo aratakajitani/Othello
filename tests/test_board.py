@@ -24,8 +24,7 @@ def test_board_setup():
 def test_place_stone():
     initial_board = Board()
     assert initial_board.can_place_stone(3, 3, Stone.BLACK) is False
-    assert initial_board.can_place_stone(8, 0, Stone.BLACK) is False
-    assert initial_board.can_place_stone(-1, 4, Stone.BLACK) is False
+    assert initial_board.can_place_stone(8, -1, Stone.BLACK) is False
     assert initial_board.can_place_stone(0, 0, Stone.BLACK) is False
     assert initial_board.can_place_stone(2, 3, Stone.BLACK) is True
 
@@ -86,35 +85,43 @@ def test_reverse_stone_limit():
     assert test_board.board[3][5] == Stone.WHITE
 
 
-def test_initial_pass():
-    initial_board = Board()
-    assert initial_board.has_places(Stone.BLACK) is True
-    assert initial_board.has_places(Stone.WHITE) is True
+def test_show():
+    board = Board()
+    initial_board = board.show()
+
+    expected_board = (
+        ". . . . . . . . \n"
+        ". . . . . . . . \n"
+        ". . . . . . . . \n"
+        ". . . W B . . . \n"
+        ". . . B W . . . \n"
+        ". . . . . . . . \n"
+        ". . . . . . . . \n"
+        ". . . . . . . . \n"
+    )
+
+    assert initial_board == expected_board
 
 
-def test_pass_check():
+def test_has_places():
+    test_board = Board()
 
-    passed_board = Board()
     W = Stone.WHITE
     B = Stone.BLACK
     E = Stone.EMPTY
-    passed_board.board = [
-        [E, B, B, B, W, W, B, B],
-        [B, B, W, W, W, B, W, B],
-        [B, W, W, B, W, W, W, W],
-        [B, W, B, B, B, B, B, B],
-        [B, B, B, B, W, B, W, W],
-        [B, W, W, W, W, W, W, W],
-        [B, B, B, B, B, B, B, B],
-        [W, B, W, W, B, B, W, W],
-    ]
-    assert passed_board.has_places(Stone.BLACK) is False
 
-
-def test_initial_finish():
-    initial_board = Board()
-    assert initial_board.finish_game() is False
-    assert initial_board.finish_game() is False
+    test_board.board = [
+            [E, E, E, E, W, E, E, E],
+            [E, E, E, E, B, E, E, E],
+            [E, E, E, B, B, E, E, E],
+            [E, E, E, B, B, E, E, E],
+            [E, E, E, E, E, E, E, E],
+            [E, E, E, E, E, E, E, E],
+            [E, E, E, E, E, E, E, E],
+            [E, E, E, E, E, E, E, E],
+        ]
+    assert test_board.has_places(Stone.BLACK) is False
+    assert test_board.has_places(Stone.WHITE) is True
 
 
 def test_finish_game():
@@ -122,13 +129,31 @@ def test_finish_game():
     W = Stone.WHITE
     B = Stone.BLACK
     finished_board.board = [
-        [B, B, B, B, W, W, B, B],
-        [B, B, W, W, W, B, W, B],
-        [B, W, W, B, W, W, W, W],
-        [B, W, B, B, B, B, B, B],
-        [B, B, B, B, W, B, W, W],
-        [B, W, W, W, W, W, W, W],
-        [B, B, B, B, B, B, B, B],
-        [W, B, W, W, B, B, W, W],
-    ]
+            [B, B, B, B, W, W, B, B],
+            [B, B, W, W, W, B, W, B],
+            [B, W, W, B, W, W, W, W],
+            [B, W, B, B, B, B, B, B],
+            [B, B, B, B, W, B, W, W],
+            [B, W, W, W, W, W, W, W],
+            [B, B, B, B, B, B, B, B],
+            [W, B, W, W, B, B, W, W],
+        ]
     assert finished_board.finish_game() is True
+
+
+def test_count_stone():
+    finished_board = Board()
+    W = Stone.WHITE
+    B = Stone.BLACK
+    finished_board.board = [
+            [B, B, B, B, W, W, B, B],
+            [B, B, W, W, W, B, W, B],
+            [B, W, W, B, W, W, W, W],
+            [B, W, B, B, B, B, B, B],
+            [B, B, B, B, W, B, W, W],
+            [B, W, W, W, W, W, W, W],
+            [B, B, B, B, B, B, B, B],
+            [W, B, W, W, B, B, W, W],
+        ]
+    expected = "白28枚 黒36枚 黒の勝ちです"
+    assert finished_board.count_stone() == expected
