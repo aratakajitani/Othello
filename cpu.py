@@ -1,6 +1,3 @@
-from board import Board
-
-
 import random
 
 
@@ -9,11 +6,11 @@ class Cpu:
     def __init__(self, stone):
         self.stone = stone
 
-    def select_play(self, board):
+    def select_place(self, board):
         can_place_flag = False
         placable_places = []
-        for y in range(Board.size):
-            for x in range(Board.size):
+        for y in range(board.size):
+            for x in range(board.size):
                 if board.can_place_stone(x, y, self.stone):
                     placable_places.append((x, y))
                     can_place_flag = True
@@ -27,5 +24,3 @@ class Cpu:
             return None
         return x, y
 
-    def prepare_ui_turn(self, game, ui):
-        return ui.select_play(game, self)

@@ -1,14 +1,11 @@
-from board import Board
-
-
 class Player:
     def __init__(self, stone):
         self.stone = stone
 
-    def select_play(self, board):
+    def select_place(self, board):
         can_place_flag = False
-        for y in range(Board.size):
-            for x in range(Board.size):
+        for y in range(board.size):
+            for x in range(board.size):
                 if board.can_place_stone(x, y, self.stone):
                     print(f"座標: ({x},{y})")
                     can_place_flag = True
@@ -16,11 +13,11 @@ class Player:
             while True:
                 try:
                     x = int(input("x座標を入力してください:"))
-                    if not 0 <= x <= Board.size:
+                    if not 0 <= x <= board.size:
                         print("入力エラーです")
                         continue
                     y = int(input("y座標を入力してください:"))
-                    if not 0 <= y <= Board.size:
+                    if not 0 <= y <= board.size:
                         print("入力エラーです")
                         continue
                 except ValueError:

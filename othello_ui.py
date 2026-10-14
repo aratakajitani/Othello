@@ -77,7 +77,7 @@ class OthelloUI:
         self.board_label.config(text=board_string)
         self.master.update()
 
-    def select_play(self, current_player):
+    def select_place(self, current_player):
         placable_places = []
         for y in range(self.board.size):
             for x in range(self.board.size):

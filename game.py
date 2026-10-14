@@ -32,12 +32,12 @@ class Game:
             ui.turn_color_show(color_str)
             ui.show()
             if isinstance(current_player, Cpu):
-                current_x_y = current_player.select_play(self.board)
+                current_x_y = current_player.select_place(self.board)
                 ui.cpu_select(current_x_y)
             elif isinstance(ui, OthelloUI):
-                current_x_y = ui.select_play(current_player)
+                current_x_y = ui.select_place(current_player)
             else:
-                current_x_y = current_player.select_play(self.board)
+                current_x_y = current_player.select_place(self.board)
             if self.board.has_places(current_player.stone):
                 x, y = current_x_y
                 self.board.reverse_stone(int(x), int(y), current_player.stone)
